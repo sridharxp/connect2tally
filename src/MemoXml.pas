@@ -27,12 +27,12 @@ uses
   IdIntercept, IdSSLOpenSSL,
   IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdHTTP,
-  license, ExtCtrls, Menus;
+  license, ExtCtrls, Menus,
+  ShellApi;
 
 type
   Tpostxmlfrm = class(TForm)
     MainMenu1: TMainMenu;
-    GetSerialNo1: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -48,11 +48,16 @@ type
     edtResFileName: TEdit;
     edtPort: TEdit;
     lblPort: TLabel;
+    mniool1: TMenuItem;
+    mniTallyServer1: TMenuItem;
+    mniLicenseKey1: TMenuItem;
     procedure btnPostXmlClick(Sender: TObject);
     procedure GetSerialNo1Click(Sender: TObject);
     procedure Register1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure mniLicenseKey1Click(Sender: TObject);
+    procedure mniTallyServer1Click(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -131,7 +136,8 @@ begin
       Res.Size div Sizeof(char));
     ResMemo.Lines.Append(xStr);
   except
-    raise exception.Create('Error Receiving Data from Tally');
+//    raise exception.Create('Error Receiving Data from Tally');
+    raise exception.Create('Error connecting to Tally');
   end;
   if Length(EdtResFileName.Text) > 0 then
     Res.SaveToFile(EdtResFileName.Text);
@@ -175,6 +181,31 @@ procedure Tpostxmlfrm.FormDestroy(Sender: TObject);
 begin
     req.Free;
     res.Free;
+end;
+
+procedure Tpostxmlfrm.mniLicenseKey1Click(Sender: TObject);
+var
+  xdb: Tbjxmllicense;
+begin
+  xdb := Tbjxmllicense.Create;
+  try
+    xdb.port := StrtoInt(edtPort.Text);
+    if Length(xdb.GetLicenseNo) > 0 then
+    MessageDlg(xdb.GetLicenseNo, mtInformation, [mbOK], 0)
+    else
+    MessageDlg('Update Tally!', mtError, [mbOK], 0);
+  finally
+  xdb.Free;
+  end;
+end;
+
+procedure Tpostxmlfrm.mniTallyServer1Click(Sender: TObject);
+var
+url: string;
+begin
+  url := 'http://127.0.0.1' + ':' + edtPort.Text;
+  URL := StringReplace(URL, '"', '%22', [rfReplaceAll]);
+  ShellExecute(0, 'open', PChar(URL), nil, nil, SW_SHOWNORMAL);
 end;
 
 end.

@@ -173,9 +173,16 @@ object postxmlfrm: Tpostxmlfrm
   object MainMenu1: TMainMenu
     Left = 160
     Top = 32
-    object GetSerialNo1: TMenuItem
-      Caption = 'GetSerialNo'
-      OnClick = GetSerialNo1Click
+    object mniool1: TMenuItem
+      Caption = 'Tool'
+      object mniTallyServer1: TMenuItem
+        Caption = 'Test Tally Server'
+        OnClick = mniTallyServer1Click
+      end
+      object mniLicenseKey1: TMenuItem
+        Caption = 'Tally License Key'
+        OnClick = mniLicenseKey1Click
+      end
     end
     object Register1: TMenuItem
       Caption = 'Developer'
