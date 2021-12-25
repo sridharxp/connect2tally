@@ -141,6 +141,7 @@ begin
   end;
   if Length(EdtResFileName.Text) > 0 then
     Res.SaveToFile(EdtResFileName.Text);
+  IdHttp.Disconnect;
 end;
 
 procedure dropname;

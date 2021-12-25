@@ -9,8 +9,6 @@ Receive Tally Response and display
 
 Xml file or manual input
 
-Dependency:
-	Indy
 
 
 
